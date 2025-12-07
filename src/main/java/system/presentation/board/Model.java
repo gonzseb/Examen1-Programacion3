@@ -9,71 +9,63 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Model extends AbstractModel {
-    private Project selectedProject;
+    private Project currentProject;
     private List<Project> projectList;
-    private Task currentTaskForm;
-    private Task selectedTask;
 
-    public static final String SELECTED_PROJECT = "selectedProject";
+    private Task currentTask;
+
+    public static final String CURRENT_PROJECT = "currentProject";
     public static final String PROJECT_LIST = "projectList";
-    public static final String CURRENT_TASK_FORM = "currentTaskForm";
+
+    public static final String CURRENT_TASK = "currentTask";
+
     public static final String PROJECT_TASKS = "projectTasks";
-    public static final String SELECTED_TASK = "selectedTask";
 
     public Model() {
-        selectedProject = new Project();
+        currentProject = new Project();
         projectList = new ArrayList<>();
-        currentTaskForm = new Task();
-        selectedTask = new Task();
+        currentTask = new Task();
     }
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         super.addPropertyChangeListener(listener);
 
-        firePropertyChange(SELECTED_PROJECT);
+        firePropertyChange(CURRENT_PROJECT);
         firePropertyChange(PROJECT_LIST);
-        firePropertyChange(CURRENT_TASK_FORM);
+        firePropertyChange(CURRENT_TASK);
         firePropertyChange(PROJECT_TASKS);
-        firePropertyChange(SELECTED_TASK);
     }
 
     // --- Getters ---
 
-    public Project getSelectedProject() {
-        return selectedProject;
+    public Project getCurrentProject() {
+        return currentProject;
     }
 
-    public Task getCurrentTaskForm() {
-        return currentTaskForm;
+    public Task getCurrentTask() {
+        return currentTask;
     }
 
     public List<Project> getProjectList() {
         return projectList;
     }
 
-    public Task getSelectedTask() { return selectedTask; }
-
     // --- Setters ---
 
-    public void setSelectedProject(Project project) {
-        this.selectedProject = project;
-        firePropertyChange(SELECTED_PROJECT);
+    public void setCurrentProject(Project project) {
+        this.currentProject = project;
+        firePropertyChange(CURRENT_PROJECT);
         firePropertyChange(PROJECT_TASKS);
     }
 
-    public void setCurrentTaskForm(Task task) {
-        this.currentTaskForm = task;
-        firePropertyChange(CURRENT_TASK_FORM);
+    public void setCurrentTask(Task task) {
+        this.currentTask = task;
+        firePropertyChange(CURRENT_TASK);
     }
 
     public void setProjectList(List<Project> list) {
         this.projectList = list;
         firePropertyChange(PROJECT_LIST);
-    }
-
-    public void setSelectedTask(Task task) {
-        this.selectedTask = task;
-        firePropertyChange(SELECTED_TASK);
     }
 }

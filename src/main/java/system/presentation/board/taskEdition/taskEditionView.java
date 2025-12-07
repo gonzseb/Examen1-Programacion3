@@ -4,6 +4,7 @@ import system.Application;
 
 import system.logic.utilities.Priority;
 import system.logic.utilities.Status;
+
 import system.presentation.board.Controller;
 import system.presentation.board.Model;
 
@@ -15,12 +16,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class taskEditionView extends JDialog implements PropertyChangeListener {
-    JPanel taskEditionPanel;
     private JComboBox selectNewPriorityComboBox;
     private JComboBox selectNewStatusComboBox;
     private JButton cancelButton;
     private JButton saveButton;
-
+    JPanel taskEditionPanel;
+    
     // -- MVC --
     private Model model;
     private Controller controller;
@@ -39,7 +40,7 @@ public class taskEditionView extends JDialog implements PropertyChangeListener {
         setModal(true);
         getRootPane().setDefaultButton(saveButton);
         setLocationRelativeTo(null);
-        setTitle("Task Edition");
+        setTitle("Priority and Status Edition");
         setSize(350, 200);
 
         selectNewPriorityComboBox.setModel(new DefaultComboBoxModel<>(Priority.values()));
@@ -89,9 +90,9 @@ public class taskEditionView extends JDialog implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
-            case Model.SELECTED_TASK:
-                selectNewPriorityComboBox.setSelectedItem(model.getSelectedTask().getPriority());
-                selectNewStatusComboBox.setSelectedItem(model.getSelectedTask().getStatus());
+            case Model.CURRENT_TASK:
+                selectNewPriorityComboBox.setSelectedItem((model.getCurrentTask().getPriority()));
+                selectNewStatusComboBox.setSelectedItem(model.getCurrentTask().getStatus());
                 selectNewPriorityComboBox.setBackground(null);
                 selectNewStatusComboBox.setBackground(null);
                 break;

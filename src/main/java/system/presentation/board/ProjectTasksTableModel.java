@@ -32,7 +32,7 @@ public class ProjectTasksTableModel extends AbstractTableModel<Task> implements 
     protected Object getPropetyAt(Task t, int col) {
         switch (cols[col]) {
             case NUMBER:
-                return rows.indexOf(t) + 1;
+                return t.getNumber();
 
             case DESCRIPTION:
                 return t.getDescription();

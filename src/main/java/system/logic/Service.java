@@ -27,13 +27,15 @@ public class Service {
     // --- Project Operations (CRUD) ---
 
     // Create (C)
-    public void createProject(Project project) throws Exception {
+    public void createProject(String description, User user) throws Exception {
         boolean exists = data.getProjects().stream()
-                .anyMatch(i -> i.getDescription().equals(project.getDescription()));
+                .anyMatch(i -> i.getDescription().equals(description));
+
         if (exists) {
             throw new Exception("Project already exists");
         }
-        data.getProjects().add(project);
+
+        data.getProjects().add(new Project(description, user));
     }
 
     // Read (R)
@@ -50,21 +52,59 @@ public class Service {
 
     // --- Task Operations ---
 
-    public void addTaskToProject(Project project, Task task) throws Exception {
-        // 1. Validation (Optional but recommended, it is already implemented in the boardView)
-        if (task.getDescription().isEmpty()) {
+    public void addTaskToProject(Project project,
+                                 String description,
+                                 String date,
+                                 Priority priority,
+                                 Status status,
+                                 User inCharge) throws Exception {
+
+        // 1. Validación de parámetros básicos
+        if (project == null || project.getCode() == null || project.getCode().isEmpty()) {
+            throw new Exception("A valid project must be selected");
+        }
+
+        if (description == null || description.isEmpty()) {
             throw new Exception("Task description is required");
         }
 
-        // 2. Ensure we are updating the "Real" project in the database
+        if (date == null || date.isEmpty()) {
+            throw new Exception("Expected end date is required");
+        }
+
+        if (priority == null) {
+            throw new Exception("Priority is required");
+        }
+
+        if (status == null) {
+            throw new Exception("Status is required");
+        }
+
+        if (inCharge == null) {
+            throw new Exception("A person in charge must be selected");
+        }
+
+        // 2. Buscar el proyecto real (almacenado)
         Project storedProject = data.getProjects().stream()
                 .filter(p -> p.getCode().equals(project.getCode()))
                 .findFirst()
-                .orElseThrow(() -> new Exception("Project not found"));
+                .orElseThrow(() -> new Exception("Project does not exist"));
 
-        // 3. Add the task
-        storedProject.addTask(task);
+        // 3. Validar que la descripción no exista en este proyecto
+        boolean exists = storedProject.getTaskList().stream()
+                .anyMatch(t -> t.getDescription().equals(description));
+
+        if (exists) {
+            throw new Exception("A task with this description already exists in the selected project");
+        }
+
+        // 4. Crear la entidad Tarea (EL NEW VA AQUÍ, en SERVICE / CONTROLLER)
+        Task newTask = new Task(description, date, priority, status, inCharge);
+
+        // 5. Guardar en el proyecto real
+        storedProject.addTask(newTask);
     }
+
 
     public void modifyTaskPriorityAndStatus(Task task, Priority priority, Status status) throws Exception {
         // 1. Null validations

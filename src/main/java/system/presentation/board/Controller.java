@@ -4,6 +4,7 @@ import system.logic.Service;
 import system.logic.entities.Project;
 import system.logic.entities.Task;
 
+import system.logic.entities.User;
 import system.logic.utilities.Priority;
 import system.logic.utilities.Status;
 
@@ -20,32 +21,34 @@ public class Controller {
 
         boardView.loadUsers(Service.instance().getAllUsers());
 
-        // Initial setup methods
-        initializeProjectsView();
+        initializeProjectsView(); // ComboBoxes en null
         clearTaskForm();
     }
 
     // Initializes/refreshes the list of projects and clears the selected one
     public void initializeProjectsView() {
-        model.setSelectedProject(new Project());
+        model.setCurrentProject(new Project());
         model.setProjectList(Service.instance().getAllProjects());
     }
 
     // Clears the data in the Task form model state
     public void clearTaskForm() {
-        model.setCurrentTaskForm(new Task());
+        model.setCurrentTask(new Task());
     }
 
-    // Handles the creation of a new project from the boardView's input
-    public void handleProjectCreation(Project project) throws Exception {
-        Service.instance().createProject(project);
-        initializeProjectsView(); // Refreshes the list to show the new project
+    public void handleProjectCreation(String description, User manager) throws Exception {
+        // 1. Validar y crear en el controller
+        Service.instance().createProject(description, manager);
+
+        // 4. Refrescar vista
+        initializeProjectsView();
     }
+
 
     // Handles adding a task to the project currently selected in the Model
-    public void addTaskToSelectedProject(Task task) throws Exception {
+    public void addTaskToSelectedProject(String description, String date, Priority priority, Status status, User inCharge) throws Exception {
         // 1. Tell the service to save the task using the currently selected project
-        Service.instance().addTaskToProject(model.getSelectedProject(), task);
+        Service.instance().addTaskToProject(model.getCurrentProject(), description, date, priority, status, inCharge);
 
         // 2. Refresh UI by clearing the task form and relying on the Model to fire property changes
         clearTaskForm();
@@ -53,11 +56,11 @@ public class Controller {
         // Since the Project object in the Model is the same one in the Service's data,
         // you only need to notify the boardView that the list of tasks for the selected project has changed.
         // The boardView should react to this by updating the Task Table (PROJECT_TASKS).
-        model.setSelectedProject(model.getSelectedProject()); // Re-set the project to fire the update for PROJECT_TASKS
+        model.setCurrentProject(model.getCurrentProject()); // Re-set the project to fire the update for PROJECT_TASKS
     }
 
     public void handleSelectedTaskEdition(Priority newPriority, Status newStatus) throws Exception {
-        Service.instance().modifyTaskPriorityAndStatus(model.getSelectedTask(), newPriority, newStatus);
-        model.setSelectedTask(model.getSelectedTask());
+        Service.instance().modifyTaskPriorityAndStatus(model.getCurrentTask(), newPriority, newStatus);
+        model.setCurrentTask(model.getCurrentTask());
     }
 }

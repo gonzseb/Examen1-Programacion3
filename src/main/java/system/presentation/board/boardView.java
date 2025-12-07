@@ -30,7 +30,6 @@ public class boardView implements PropertyChangeListener {
     private JComboBox statusComboBox;
     private JComboBox personInChargeComboBox;
     private JPanel createTaskPanel;
-
     private taskEditionView taskEditionWindow;
 
     // -- MVC --
@@ -52,8 +51,8 @@ public class boardView implements PropertyChangeListener {
 
     public void setModel(Model model) {
         this.model = model;
-        model.addPropertyChangeListener(this);
         taskEditionWindow.setModel(model);
+        model.addPropertyChangeListener(this);
     }
 
     public void setController(Controller controller) {
@@ -102,7 +101,7 @@ public class boardView implements PropertyChangeListener {
             }
 
             try {
-                controller.handleProjectCreation(new Project(description, selectedManager));
+                controller.handleProjectCreation(description, selectedManager);
                 clearProjectForm();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(boardPanel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -115,7 +114,7 @@ public class boardView implements PropertyChangeListener {
 
                 if (selectedRow >= 0) {
                     Project seleccionado = ((ProjectsTableModel) projects.getModel()).getRowAt(selectedRow);
-                    model.setSelectedProject(seleccionado);
+                    model.setCurrentProject(seleccionado);
                     projectSelected.setText("Project Selected ID: " + seleccionado.getCode());
                     createTaskPanel.setVisible(true);
                 }
@@ -133,7 +132,7 @@ public class boardView implements PropertyChangeListener {
 
             StringBuilder errors = new StringBuilder();
 
-            if (model.getSelectedProject().getCode().isEmpty()) {
+            if (model.getCurrentProject().getCode().isEmpty()) {
                 projectSelected.setBackground(Application.BACKGROUND_ERROR);
                 errors.append("Project must be selected.\n");
             }
@@ -169,11 +168,22 @@ public class boardView implements PropertyChangeListener {
             }
 
             try {
-                Task newTask = new Task(description, date, priority, status, inCharge);
-                controller.addTaskToSelectedProject(newTask);
+                controller.addTaskToSelectedProject(description, date, priority, status, inCharge);
                 clearTaskForm();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(boardPanel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        tasks.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int selectedRow = tasks.getSelectedRow();
+
+                if (selectedRow >= 0) {
+                    Task selected = ((ProjectTasksTableModel) tasks.getModel()).getRowAt(selectedRow);
+                    taskEditionWindow.setTitle(selected.getNumber() + " Priority and Status Edition");
+                    model.setCurrentTask(selected);
+                }
             }
         });
 
@@ -187,10 +197,6 @@ public class boardView implements PropertyChangeListener {
                     int selectedRow = tasks.getSelectedRow();
 
                     if (selectedRow >= 0) {
-                        Task selectedTask = ((ProjectTasksTableModel) tasks.getModel()).getRowAt(selectedRow);
-
-                        model.setSelectedTask(selectedTask);
-
                         taskEditionWindow.setVisible(true);
                     }
                 }
@@ -203,9 +209,9 @@ public class boardView implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
-            case Model.SELECTED_PROJECT:
-                projectDescriptionTextField.setText(model.getSelectedProject().getDescription());
-                managerComboBox.setSelectedItem(model.getSelectedProject().getManager());
+            case Model.CURRENT_PROJECT:
+                projectDescriptionTextField.setText(model.getCurrentProject().getDescription());
+                managerComboBox.setSelectedItem(model.getCurrentProject().getManager());
                 projectDescriptionTextField.setBackground(null);
                 managerComboBox.setBackground(null);
                 break;
@@ -221,12 +227,13 @@ public class boardView implements PropertyChangeListener {
                 projects.setModel(new ProjectsTableModel(cols, model.getProjectList()));
                 break;
 
-            case Model.CURRENT_TASK_FORM:
-                taskDescriptionTextField.setText(model.getCurrentTaskForm().getDescription());
-                spectedEndDateTextField.setText(model.getCurrentTaskForm().getSpectedEndDate());
-                priorityComboBox.setSelectedItem((model.getCurrentTaskForm().getPriority()));
-                statusComboBox.setSelectedItem(model.getCurrentTaskForm().getStatus());
-                personInChargeComboBox.setSelectedItem(model.getCurrentTaskForm().getPersonInCharge());
+            case Model.CURRENT_TASK:
+                taskDescriptionTextField.setText(model.getCurrentTask().getDescription());
+                spectedEndDateTextField.setText(model.getCurrentTask().getSpectedEndDate());
+                priorityComboBox.setSelectedItem((model.getCurrentTask().getPriority()));
+                statusComboBox.setSelectedItem(model.getCurrentTask().getStatus());
+                personInChargeComboBox.setSelectedItem(model.getCurrentTask().getPersonInCharge());
+
                 priorityComboBox.setBackground(null);
                 statusComboBox.setBackground(null);
                 personInChargeComboBox.setBackground(null);
@@ -242,24 +249,8 @@ public class boardView implements PropertyChangeListener {
                         ProjectTasksTableModel.PERSON_IN_CHARGE
                 };
 
-                tasks.setModel(new ProjectTasksTableModel(taskCols, model.getSelectedProject().getTaskList()));
+                tasks.setModel(new ProjectTasksTableModel(taskCols, model.getCurrentProject().getTaskList()));
                 break;
-
-            case Model.SELECTED_TASK:
-                taskDescriptionTextField.setText(model.getSelectedTask().getDescription());
-                spectedEndDateTextField.setText(model.getSelectedTask().getSpectedEndDate());
-                priorityComboBox.setSelectedItem(model.getSelectedTask().getPriority());
-                statusComboBox.setSelectedItem(model.getSelectedTask().getStatus());
-                personInChargeComboBox.setSelectedItem(model.getSelectedTask().getPersonInCharge());
-
-                taskDescriptionTextField.setBackground(null);
-                spectedEndDateTextField.setBackground(null);
-                priorityComboBox.setBackground(null);
-                statusComboBox.setBackground(null);
-                personInChargeComboBox.setBackground(null);
-
-                break;
-
         }
         this.boardPanel.revalidate();
     }
