@@ -2,9 +2,9 @@ package system;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 
+import system.presentation.board.BoardView;
 import system.presentation.board.Controller;
 import system.presentation.board.Model;
-import system.presentation.board.boardView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +21,7 @@ public class Application {
             // If FlatLaf fails (e.g., jar missing), the application will still run.
         }
 
-        boardView boardView = new boardView();
+        BoardView boardView = new BoardView();
         Model model = new Model();
         Controller controller = new Controller(boardView, model);
 
@@ -48,7 +48,7 @@ public class Application {
         // Create tabbed pane
         JTabbedPane tabs = new JTabbedPane();
 
-        // boardView panel as a tab
+        // BoardView panel as a tab
         tabs.addTab("Projects", boardView.getPanel());
 
         // Set tabbed pane as window content

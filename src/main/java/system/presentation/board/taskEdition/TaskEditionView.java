@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class taskEditionView extends JDialog implements PropertyChangeListener {
+public class TaskEditionView extends JDialog implements PropertyChangeListener {
     private JComboBox selectNewPriorityComboBox;
     private JComboBox selectNewStatusComboBox;
     private JButton cancelButton;
@@ -35,7 +35,7 @@ public class taskEditionView extends JDialog implements PropertyChangeListener {
         this.controller = controller;
     }
 
-    public taskEditionView() {
+    public TaskEditionView() {
         setContentPane(taskEditionPanel);
         setModal(true);
         getRootPane().setDefaultButton(saveButton);
@@ -71,7 +71,7 @@ public class taskEditionView extends JDialog implements PropertyChangeListener {
 
                 try {
                     controller.handleSelectedTaskEdition(priority, status);
-                    taskEditionView.this.setVisible(false);
+                    TaskEditionView.this.setVisible(false);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(taskEditionPanel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -81,7 +81,7 @@ public class taskEditionView extends JDialog implements PropertyChangeListener {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                taskEditionView.this.setVisible(false);
+                TaskEditionView.this.setVisible(false);
             }
         });
 

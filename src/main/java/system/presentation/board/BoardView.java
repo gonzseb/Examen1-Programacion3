@@ -17,9 +17,9 @@ import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
 import java.util.List;
 
-import system.presentation.board.taskEdition.taskEditionView;
+import system.presentation.board.taskEdition.TaskEditionView;
 
-public class boardView implements PropertyChangeListener {
+public class BoardView implements PropertyChangeListener {
     private JPanel boardPanel;
     private JButton createProjectButton;
     private JTextField projectDescriptionTextField;
@@ -34,7 +34,7 @@ public class boardView implements PropertyChangeListener {
     private JComboBox personInChargeComboBox;
     private JPanel createTaskPanel;
     private DatePicker endDatePicker;
-    private taskEditionView taskEditionWindow;
+    private TaskEditionView taskEditionWindow;
 
     // -- MVC --
     public void loadUsers(List<User> users) {
@@ -48,6 +48,8 @@ public class boardView implements PropertyChangeListener {
 
         managerComboBox.setModel(managerModel);
         personInChargeComboBox.setModel(personModel);
+        managerComboBox.setSelectedIndex(-1);
+        personInChargeComboBox.setSelectedIndex(-1);
     }
 
     private Model model;
@@ -64,7 +66,7 @@ public class boardView implements PropertyChangeListener {
         taskEditionWindow.setController(controller);
     }
 
-    public boardView() {
+    public BoardView() {
         endDatePicker.getSettings().setDateRangeLimits(LocalDate.now(), null); // From now to infinite
 
         endDatePicker.setBackground(Color.lightGray);
@@ -74,15 +76,15 @@ public class boardView implements PropertyChangeListener {
         endDatePicker.getSettings().setColor(DatePickerSettings.DateArea.TextClearLabel, Color.BLACK);
         endDatePicker.getSettings().setColor(DatePickerSettings.DateArea.TextMonthAndYearMenuLabels, Color.BLACK);
 
-        taskEditionWindow = new taskEditionView();
+        taskEditionWindow = new TaskEditionView();
 
         projectDescriptionTextField.setToolTipText("Write a description");
+
         managerComboBox.setToolTipText("Select a manager");
 
         projectSelected.setText("Project Selected ID: Empty");
 
         taskDescriptionTextField.setToolTipText("Write a description");
-        endDatePicker.setToolTipText("Write a date. Ex: mm-dd-yyyy");
 
         priorityComboBox.setModel(new DefaultComboBoxModel<>(Priority.values()));
         statusComboBox.setModel(new DefaultComboBoxModel<>(Status.values()));
@@ -90,8 +92,6 @@ public class boardView implements PropertyChangeListener {
         createTaskPanel.setVisible(false);
 
         createProjectButton.addActionListener(e -> {
-            resetFieldStylesProjectForm();
-
             String description = projectDescriptionTextField.getText().trim();
             User selectedManager = (User) managerComboBox.getSelectedItem();
 
@@ -115,7 +115,8 @@ public class boardView implements PropertyChangeListener {
 
             try {
                 controller.handleProjectCreation(description, selectedManager);
-                clearProjectForm();
+                projectSelected.setText("Project Selected ID: Empty");
+                createTaskPanel.setVisible(false);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(boardPanel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -126,17 +127,15 @@ public class boardView implements PropertyChangeListener {
                 int selectedRow = projects.getSelectedRow();
 
                 if (selectedRow >= 0) {
-                    Project seleccionado = ((ProjectsTableModel) projects.getModel()).getRowAt(selectedRow);
-                    model.setCurrentProject(seleccionado);
-                    projectSelected.setText("Project Selected ID: " + seleccionado.getCode());
+                    Project selectedProject = ((ProjectsTableModel) projects.getModel()).getRowAt(selectedRow);
+                    model.setCurrentProject(selectedProject);
+                    projectSelected.setText("Project Selected ID: " + selectedProject.getCode());
                     createTaskPanel.setVisible(true);
                 }
             }
         });
 
         createTaskButton.addActionListener(e -> {
-            resetFieldStylesTaskForm();
-
             String description = taskDescriptionTextField.getText().trim();
             LocalDate date = endDatePicker.getDate();
             Priority priority = (Priority) priorityComboBox.getSelectedItem();
@@ -182,7 +181,6 @@ public class boardView implements PropertyChangeListener {
 
             try {
                 controller.addTaskToSelectedProject(description, date, priority, status, inCharge);
-                clearTaskForm();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(boardPanel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -203,13 +201,13 @@ public class boardView implements PropertyChangeListener {
         tasks.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                // Detect double-click
-                if (e.getClickCount() == 2 && !e.isConsumed()) {
-                    e.consume();
+                if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
 
-                    int selectedRow = tasks.getSelectedRow();
+                    JTable table = (JTable) e.getSource();
+                    int row = table.rowAtPoint(e.getPoint());
 
-                    if (selectedRow >= 0) {
+                    if (row >= 0) {
+                        table.setRowSelectionInterval(row, row);
                         taskEditionWindow.setVisible(true);
                     }
                 }
@@ -266,34 +264,5 @@ public class boardView implements PropertyChangeListener {
                 break;
         }
         this.boardPanel.revalidate();
-    }
-
-    // -- Helpers --
-
-    private void resetFieldStylesProjectForm() {
-        projectDescriptionTextField.setBackground(null);
-        managerComboBox.setBackground(null);
-    }
-
-    private void resetFieldStylesTaskForm() {
-        taskDescriptionTextField.setBackground(null);
-        endDatePicker.setBackground(null);
-        priorityComboBox.setBackground(null);
-        statusComboBox.setBackground(null);
-        personInChargeComboBox.setBackground(null);
-    }
-
-    private void clearProjectForm() {
-        projectDescriptionTextField.setText("");
-        managerComboBox.setSelectedIndex(-1);
-        projectSelected.setText("Project Selected ID: Empty");
-    }
-
-    private void clearTaskForm() {
-        taskDescriptionTextField.setText("");
-        endDatePicker.setText("");
-        priorityComboBox.setSelectedIndex(-1);
-        statusComboBox.setSelectedIndex(-1);
-        personInChargeComboBox.setSelectedIndex(-1);
     }
 }
