@@ -8,6 +8,8 @@ import system.logic.entities.User;
 import system.logic.utilities.Priority;
 import system.logic.utilities.Status;
 
+import java.time.LocalDate;
+
 public class Controller {
     private final boardView boardView;
     private final Model model;
@@ -46,7 +48,7 @@ public class Controller {
 
 
     // Handles adding a task to the project currently selected in the Model
-    public void addTaskToSelectedProject(String description, String date, Priority priority, Status status, User inCharge) throws Exception {
+    public void addTaskToSelectedProject(String description, LocalDate date, Priority priority, Status status, User inCharge) throws Exception {
         // 1. Tell the service to save the task using the currently selected project
         Service.instance().addTaskToProject(model.getCurrentProject(), description, date, priority, status, inCharge);
 

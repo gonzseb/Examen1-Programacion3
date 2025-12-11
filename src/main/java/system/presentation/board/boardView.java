@@ -1,5 +1,7 @@
 package system.presentation.board;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 import system.Application;
 import system.logic.entities.Project;
 import system.logic.entities.Task;
@@ -9,8 +11,10 @@ import system.logic.utilities.Status;
 
 import javax.swing.*;
 
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.LocalDate;
 import java.util.List;
 
 import system.presentation.board.taskEdition.taskEditionView;
@@ -25,11 +29,11 @@ public class boardView implements PropertyChangeListener {
     private JLabel projectSelected;
     private JButton createTaskButton;
     private JTextField taskDescriptionTextField;
-    private JTextField spectedEndDateTextField;
     private JComboBox priorityComboBox;
     private JComboBox statusComboBox;
     private JComboBox personInChargeComboBox;
     private JPanel createTaskPanel;
+    private DatePicker endDatePicker;
     private taskEditionView taskEditionWindow;
 
     // -- MVC --
@@ -61,6 +65,15 @@ public class boardView implements PropertyChangeListener {
     }
 
     public boardView() {
+        endDatePicker.getSettings().setDateRangeLimits(LocalDate.now(), null); // From now to infinite
+
+        endDatePicker.setBackground(Color.lightGray);
+
+        endDatePicker.getSettings().setColor(DatePickerSettings.DateArea.CalendarBackgroundSelectedDate, Color.LIGHT_GRAY);
+        endDatePicker.getSettings().setColor(DatePickerSettings.DateArea.TextTodayLabel, Color.BLACK);
+        endDatePicker.getSettings().setColor(DatePickerSettings.DateArea.TextClearLabel, Color.BLACK);
+        endDatePicker.getSettings().setColor(DatePickerSettings.DateArea.TextMonthAndYearMenuLabels, Color.BLACK);
+
         taskEditionWindow = new taskEditionView();
 
         projectDescriptionTextField.setToolTipText("Write a description");
@@ -69,7 +82,7 @@ public class boardView implements PropertyChangeListener {
         projectSelected.setText("Project Selected ID: Empty");
 
         taskDescriptionTextField.setToolTipText("Write a description");
-        spectedEndDateTextField.setToolTipText("Write a date. Ex: mm-dd-yyyy");
+        endDatePicker.setToolTipText("Write a date. Ex: mm-dd-yyyy");
 
         priorityComboBox.setModel(new DefaultComboBoxModel<>(Priority.values()));
         statusComboBox.setModel(new DefaultComboBoxModel<>(Status.values()));
@@ -125,7 +138,7 @@ public class boardView implements PropertyChangeListener {
             resetFieldStylesTaskForm();
 
             String description = taskDescriptionTextField.getText().trim();
-            String date = spectedEndDateTextField.getText().trim();
+            LocalDate date = endDatePicker.getDate();
             Priority priority = (Priority) priorityComboBox.getSelectedItem();
             Status status = (Status) statusComboBox.getSelectedItem();
             User inCharge = (User) personInChargeComboBox.getSelectedItem();
@@ -142,8 +155,8 @@ public class boardView implements PropertyChangeListener {
                 errors.append("Description is required.\n");
             }
 
-            if (date.isEmpty()) {
-                spectedEndDateTextField.setBackground(Application.BACKGROUND_ERROR);
+            if (endDatePicker.getDate() == null) {
+                endDatePicker.setBackground(Application.BACKGROUND_ERROR);
                 errors.append("Expected end date is required.\n");
             }
 
@@ -229,7 +242,7 @@ public class boardView implements PropertyChangeListener {
 
             case Model.CURRENT_TASK:
                 taskDescriptionTextField.setText(model.getCurrentTask().getDescription());
-                spectedEndDateTextField.setText(model.getCurrentTask().getSpectedEndDate());
+                endDatePicker.setDate(model.getCurrentTask().getSpectedEndDate());
                 priorityComboBox.setSelectedItem((model.getCurrentTask().getPriority()));
                 statusComboBox.setSelectedItem(model.getCurrentTask().getStatus());
                 personInChargeComboBox.setSelectedItem(model.getCurrentTask().getPersonInCharge());
@@ -264,7 +277,7 @@ public class boardView implements PropertyChangeListener {
 
     private void resetFieldStylesTaskForm() {
         taskDescriptionTextField.setBackground(null);
-        spectedEndDateTextField.setBackground(null);
+        endDatePicker.setBackground(null);
         priorityComboBox.setBackground(null);
         statusComboBox.setBackground(null);
         personInChargeComboBox.setBackground(null);
@@ -278,7 +291,7 @@ public class boardView implements PropertyChangeListener {
 
     private void clearTaskForm() {
         taskDescriptionTextField.setText("");
-        spectedEndDateTextField.setText("");
+        endDatePicker.setText("");
         priorityComboBox.setSelectedIndex(-1);
         statusComboBox.setSelectedIndex(-1);
         personInChargeComboBox.setSelectedIndex(-1);

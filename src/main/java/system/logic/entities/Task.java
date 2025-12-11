@@ -4,24 +4,26 @@ import system.logic.utilities.Priority;
 import system.logic.utilities.Status;
 import system.logic.utilities.IdGenerator;
 
+import java.time.LocalDate;
+
 public class Task {
     private final String number;
     private final String description;
-    private final String spectedEndDate;
+    private final LocalDate spectedEndDate;
     private Priority priority; // Can change
     private Status status; // Can change
     private final User personInCharge;
 
     public Task() {
-        this.number = "";
-        this.description = "";
-        this.spectedEndDate = "";
+        this.number = null;
+        this.description = null;
+        this.spectedEndDate = null;
         this.priority = null;
         this.status = null;
         this.personInCharge = null;
     }
 
-    public Task(String description, String spectedEndDate, Priority priority, Status status, User personInCharge) {
+    public Task(String description, LocalDate spectedEndDate, Priority priority, Status status, User personInCharge) {
         this.number = IdGenerator.newTaskId();
         this.description = description;
         this.spectedEndDate = spectedEndDate;
@@ -38,7 +40,7 @@ public class Task {
         return description;
     }
 
-    public String getSpectedEndDate() {
+    public LocalDate getSpectedEndDate() {
         return spectedEndDate;
     }
 

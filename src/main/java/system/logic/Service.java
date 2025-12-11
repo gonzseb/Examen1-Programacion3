@@ -5,6 +5,7 @@ import system.logic.entities.Project;
 import system.logic.entities.Task;
 import system.logic.entities.User;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import system.logic.utilities.Priority;
@@ -54,7 +55,7 @@ public class Service {
 
     public void addTaskToProject(Project project,
                                  String description,
-                                 String date,
+                                 LocalDate date,
                                  Priority priority,
                                  Status status,
                                  User inCharge) throws Exception {
@@ -68,7 +69,7 @@ public class Service {
             throw new Exception("Task description is required");
         }
 
-        if (date == null || date.isEmpty()) {
+        if (date == null) {
             throw new Exception("Expected end date is required");
         }
 
