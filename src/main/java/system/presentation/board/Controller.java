@@ -22,6 +22,9 @@ public class Controller {
         boardView.setModel(model);
 
         boardView.loadUsers(Service.instance().getAllUsers());
+
+        // To visualize the projects and tasks added in Data Class
+        model.setProjectList(Service.instance().getAllProjects());
     }
 
     public void handleProjectCreation(String description, User manager) throws Exception {
