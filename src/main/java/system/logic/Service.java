@@ -9,8 +9,8 @@ import system.logic.entities.User;
 import java.time.LocalDate;
 import java.util.List;
 
-import system.logic.utilities.Priority;
-import system.logic.utilities.Status;
+import system.logic.entities.utilities.Priority;
+import system.logic.entities.utilities.Status;
 
 public class Service {
     private static Service theInstance;

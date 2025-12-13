@@ -2,8 +2,8 @@ package system.presentation.board.taskEdition;
 
 import system.Application;
 
-import system.logic.utilities.Priority;
-import system.logic.utilities.Status;
+import system.logic.entities.utilities.Priority;
+import system.logic.entities.utilities.Status;
 
 import system.presentation.board.Controller;
 import system.presentation.board.Model;

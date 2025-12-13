@@ -6,9 +6,9 @@ import jakarta.xml.bind.annotation.XmlID;
 import jakarta.xml.bind.annotation.XmlIDREF;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import system.logic.entities.utilities.LocalDateAdapter;
-import system.logic.utilities.Priority;
-import system.logic.utilities.Status;
-import system.logic.utilities.IdGenerator;
+import system.logic.entities.utilities.Priority;
+import system.logic.entities.utilities.Status;
+import system.logic.entities.utilities.IdGenerator;
 
 import java.time.LocalDate;
 

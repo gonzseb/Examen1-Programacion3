@@ -1,7 +1,7 @@
 package system.logic.entities;
 
 import jakarta.xml.bind.annotation.*;
-import system.logic.utilities.IdGenerator;
+import system.logic.entities.utilities.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

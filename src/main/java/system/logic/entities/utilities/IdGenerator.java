@@ -1,4 +1,4 @@
-package system.logic.utilities;
+package system.logic.entities.utilities;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

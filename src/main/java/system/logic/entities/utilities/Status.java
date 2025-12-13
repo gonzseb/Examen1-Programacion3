@@ -1,4 +1,4 @@
-package system.logic.utilities;
+package system.logic.entities.utilities;
 
 public enum Status {
     OPEN("Open"),

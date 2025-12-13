@@ -5,8 +5,8 @@ import system.logic.entities.Project;
 
 import system.logic.entities.Task;
 import system.logic.entities.User;
-import system.logic.utilities.Priority;
-import system.logic.utilities.Status;
+import system.logic.entities.utilities.Priority;
+import system.logic.entities.utilities.Status;
 
 import java.time.LocalDate;
 

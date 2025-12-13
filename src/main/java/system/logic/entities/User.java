@@ -3,7 +3,7 @@ package system.logic.entities;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlID;
-import system.logic.utilities.IdGenerator;
+import system.logic.entities.utilities.IdGenerator;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User {
