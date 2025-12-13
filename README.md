@@ -8,7 +8,7 @@
 
 ## 📋 Overview
 
-This project is a **desktop application developed as the complete solution for Exam 1 of Programming III (Semester 2025-02)**.
+This project is a **desktop application developed as the complete solution for Exam 1 of Programación 3 (Second Semester 2025)**.
 
 The objective of the exam was to design and implement a **Project Management System** capable of managing projects, their associated tasks, and the users responsible for each task.
 
