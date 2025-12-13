@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data>
+    <projects>
+        <project>
+            <code>PRJ-1</code>
+            <description>Create MVC system in Java</description>
+            <manager>USR-5</manager>
+            <tasks>
+                <task>
+                    <number>TSK-1</number>
+                    <description>Study professor's MVC projects</description>
+                    <spectedEndDate>2025-12-13</spectedEndDate>
+                    <priority>HIGH</priority>
+                    <status>OPEN</status>
+                    <personInCharge>USR-5</personInCharge>
+                </task>
+                <task>
+                    <number>TSK-2</number>
+                    <description>Implement XML persistence</description>
+                    <spectedEndDate>2025-12-24</spectedEndDate>
+                    <priority>MEDIUM</priority>
+                    <status>IN_PROGRESS</status>
+                    <personInCharge>USR-2</personInCharge>
+                </task>
+            </tasks>
+        </project>
+    </projects>
+    <users>
+        <user>
+            <id>USR-1</id>
+            <name>Sam Altman</name>
+            <email>samaltman@gpt.com</email>
+        </user>
+        <user>
+            <id>USR-2</id>
+            <name>Greg Brockman</name>
+            <email>greg@gpt.com</email>
+        </user>
+        <user>
+            <id>USR-3</id>
+            <name>Ilya Sutskever</name>
+            <email>ilya@gpt.com</email>
+        </user>
+        <user>
+            <id>USR-4</id>
+            <name>Andrej Karpathy</name>
+            <email>karpathy@tesla.com</email>
+        </user>
+        <user>
+            <id>USR-5</id>
+            <name>Sebastián González</name>
+            <email>sbsgonzalez21@gmail.com</email>
+        </user>
+    </users>
+</data>
