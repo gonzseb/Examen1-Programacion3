@@ -1,11 +1,24 @@
 package system.logic.entities;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlID;
 import system.logic.utilities.IdGenerator;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class User {
-    private final String id;
-    private final String name;
-    private final String email;
+    @XmlID
+    private String id;
+
+    private String name;
+    private String email;
+
+    public User() {
+        // Initialization for JAXB unmarshalling
+        this.id = null;
+        this.name = null;
+        this.email = null;
+    }
 
     public User(String name, String email) {
         this.id = IdGenerator.newUserId();

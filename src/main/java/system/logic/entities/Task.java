@@ -1,18 +1,32 @@
 package system.logic.entities;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlID;
+import jakarta.xml.bind.annotation.XmlIDREF;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import system.logic.entities.utilities.LocalDateAdapter;
 import system.logic.utilities.Priority;
 import system.logic.utilities.Status;
 import system.logic.utilities.IdGenerator;
 
 import java.time.LocalDate;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Task {
-    private final String number;
-    private final String description;
-    private final LocalDate spectedEndDate;
+    @XmlID
+    private String number;
+
+    private String description;
+
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private LocalDate spectedEndDate;
+
     private Priority priority; // Can change
     private Status status; // Can change
-    private final User personInCharge;
+
+    @XmlIDREF
+    private User personInCharge;
 
     public Task() {
         this.number = null;

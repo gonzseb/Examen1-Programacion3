@@ -2,12 +2,15 @@ package system;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 
+import system.logic.Service;
 import system.presentation.board.BoardView;
 import system.presentation.board.Controller;
 import system.presentation.board.Model;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.URL;
 
 public class Application {
@@ -55,6 +58,14 @@ public class Application {
         window.setContentPane(tabs);
 
         window.setVisible(true);
+
+        window.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                Service.instance().stop();
+            }
+        });
 
     }
 

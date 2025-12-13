@@ -1,15 +1,24 @@
 package system.logic.entities;
 
+import jakarta.xml.bind.annotation.*;
 import system.logic.utilities.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Project {
-    private final String code;
-    private final String description;
-    private final User manager;
-    private final List<Task> taskList;
+    @XmlID
+    private String code;
+
+    private String description;
+
+    @XmlIDREF
+    private User manager;
+
+    @XmlElementWrapper(name = "tasks")
+    @XmlElement(name = "task")
+    private List<Task> taskList;
 
     public Project() {
         this.code = "";

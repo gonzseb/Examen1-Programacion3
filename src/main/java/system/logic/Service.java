@@ -1,6 +1,7 @@
 package system.logic;
 
 import system.data.Data;
+import system.data.XmlPersister;
 import system.logic.entities.Project;
 import system.logic.entities.Task;
 import system.logic.entities.User;
@@ -22,7 +23,20 @@ public class Service {
     private Data data;
 
     private Service() {
-        data = new Data();
+        try{
+            data= XmlPersister.instance().load();
+        }
+        catch(Exception e){
+            data =  new Data();
+        }
+    }
+
+    public void stop() {
+        try {
+            XmlPersister.instance().store(data);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     // --- Project Operations (CRUD) ---
