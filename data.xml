@@ -11,15 +11,15 @@
                     <description>Study professor's MVC projects</description>
                     <spectedEndDate>2025-12-13</spectedEndDate>
                     <priority>HIGH</priority>
-                    <status>OPEN</status>
+                    <status>IN_PROGRESS</status>
                     <personInCharge>USR-5</personInCharge>
                 </task>
                 <task>
                     <number>TSK-2</number>
                     <description>Implement XML persistence</description>
                     <spectedEndDate>2025-12-24</spectedEndDate>
-                    <priority>MEDIUM</priority>
-                    <status>IN_PROGRESS</status>
+                    <priority>LOW</priority>
+                    <status>COMPLETED</status>
                     <personInCharge>USR-2</personInCharge>
                 </task>
             </tasks>
