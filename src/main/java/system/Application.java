@@ -29,7 +29,7 @@ public class Application {
         Controller controller = new Controller(boardView, model);
 
         JFrame window = new JFrame("Project Management System");
-        window.setSize(1100, 600);
+        window.setSize(1100, 700);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
 
