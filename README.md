@@ -153,3 +153,12 @@ src/main/java
         └── taskEdition
                 TaskEditionView.form
                 TaskEditionView.java
+
+```
+
+---
+
+## 👥 Estudiante detrás de la solución:
+
+- Sebastián David González Masis – 119220546  
+
