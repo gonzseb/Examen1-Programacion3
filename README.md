@@ -158,7 +158,7 @@ src/main/java
 
 ---
 
-## 👥 Estudiante detrás de la solución:
+## 👥 Student:
 
 - Sebastián David González Masis – 119220546  
 
