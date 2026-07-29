@@ -63,10 +63,40 @@ The project is organized into three main layers:
 ## Project Structure
 
 ```text
-src/main/java/system
-├── data
-├── logic
-└── presentation
+src/
+└── main/
+    └── java/
+        └── system/
+            ├── Application.java
+            │
+            ├── data/                     # Persistence layer
+            │   ├── Data.java
+            │   └── XmlPersister.java
+            │
+            ├── logic/                    # Business logic
+            │   ├── Service.java
+            │   ├── entities/
+            │   │   ├── Project.java
+            │   │   ├── Task.java
+            │   │   └── User.java
+            │   └── utilities/
+            │       ├── IdGenerator.java
+            │       ├── LocalDateAdapter.java
+            │       ├── Priority.java
+            │       └── Status.java
+            │
+            └── presentation/             # MVC
+                ├── AbstractModel.java
+                ├── AbstractTableModel.java
+                ├── board/
+                │   ├── BoardView.java
+                │   ├── Controller.java
+                │   ├── Model.java
+                │   ├── ProjectsTableModel.java
+                │   └── ProjectTasksTableModel.java
+                │
+                └── taskEdition/
+                    └── TaskEditionView.java
 ```
 
 ## Technologies
